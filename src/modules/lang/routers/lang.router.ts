@@ -11,4 +11,9 @@ export const routes: RouteOptions[] = [
     url: "/prompt",
     handler: controller.langChainEndpoint,
   },
+  {
+    method: "POST",
+    url: "/prompt/next",
+    handler: controller.langChainEndpointContinueConversation,
+  },
 ];

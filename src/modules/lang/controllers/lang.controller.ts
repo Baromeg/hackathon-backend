@@ -8,8 +8,33 @@ export const langChainEndpoint = async (
 ) => {
   const subject = req.body.subject;
   const context = req.body.context;
-  const level = req.body.level;
-  const method = req.body.method;
+  const level = req.body.audience;
+  const method = req.body.intent;
+  try {
+    LangChainService.initNewConversation();
+    const response = await LangChainService.prompt(
+      subject,
+      context,
+      level,
+      method
+    );
+    const data = JSON.parse(response);
+    rep.status(200).send({ ...data });
+  } catch (err) {
+    rep.status(500).send(err);
+  }
+};
+
+export const langChainEndpointContinueConversation = async (
+  req: FastifyRequest<RouteGenericInterfaceLandModel>,
+  rep: FastifyReply
+) => {
+  const subject = req.body.subject;
+  const context = req.body.context;
+  const level = req.body.audience;
+  const method = req.body.intent;
+  if (!LangChainService.model)
+    rep.status(404).send({ error: "Conversation is not initiated." });
   try {
     const response = await LangChainService.prompt(
       subject,
@@ -18,7 +43,7 @@ export const langChainEndpoint = async (
       method
     );
     const data = JSON.parse(response);
-    rep.status(200).send({ data });
+    rep.status(200).send({ ...data });
   } catch (err) {
     rep.status(500).send(err);
   }

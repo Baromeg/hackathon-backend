@@ -9,8 +9,8 @@ export interface RequestGenericInterfaceLangModel {
   Body: {
     subject: string;
     context: string;
-    level: string;
-    method: string;
+    intent: string;
+    audience: string;
   };
   Querystring?: RequestQuerystringDefault;
   Params?: RequestParamsDefault;
