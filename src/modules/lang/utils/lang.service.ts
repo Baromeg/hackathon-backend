@@ -1,12 +1,14 @@
 import { OpenAI } from "langchain/llms/openai";
 import { ConversationChain } from "langchain/chains";
 import { BufferMemory } from "langchain/memory";
-import { constructPrompt } from "./constants";
+import { constructPrompt, getAWikipidiaPageURL } from "./constants";
 
 class LangChainService {
   private _model: OpenAI;
   private _conversation: ConversationChain;
   private _memory: BufferMemory;
+  private _withinScope: string = "";
+  private _graph_data: Array<any>;
 
   get model() {
     return this._model;
@@ -14,6 +16,18 @@ class LangChainService {
 
   get Conversation(): ConversationChain {
     return this._conversation;
+  }
+
+  get graphData() {
+    return this._graph_data;
+  }
+
+  set graphData(object) {
+    this._graph_data = object;
+  }
+
+  public pushToSequence(newSubjectGraph) {
+    this._graph_data.push(newSubjectGraph);
   }
 
   private createModel(
@@ -50,6 +64,8 @@ class LangChainService {
     );
     this.createMemory();
     this.createConversation();
+    this._withinScope = "";
+    this._graph_data = new Array();
   }
 
   public async prompt(
@@ -58,10 +74,18 @@ class LangChainService {
     level: string,
     method: string
   ): Promise<string> {
-    const constructedPrompt = constructPrompt(subject, context, level, method);
+    const constructedPrompt = constructPrompt(
+      subject,
+      context,
+      level,
+      method,
+      this._withinScope
+    );
+    console.log("constructedPrompt", constructedPrompt);
     const response = await this._conversation.call({
       input: constructedPrompt,
     });
+    this._withinScope = subject;
     return response.response;
   }
 }

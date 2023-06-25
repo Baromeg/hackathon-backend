@@ -16,4 +16,9 @@ export const routes: RouteOptions[] = [
     url: "/prompt/next",
     handler: controller.langChainEndpointContinueConversation,
   },
+  {
+    method: "GET",
+    url: "/prompt/graph",
+    handler: controller.langChainEndpointGetGraphData,
+  },
 ];

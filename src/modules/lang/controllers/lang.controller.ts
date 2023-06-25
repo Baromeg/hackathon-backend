@@ -19,6 +19,7 @@ export const langChainEndpoint = async (
       method
     );
     const data = JSON.parse(response);
+    LangChainService.pushToSequence(data);
     rep.status(200).send({ ...data });
   } catch (err) {
     rep.status(500).send(err);
@@ -43,8 +44,16 @@ export const langChainEndpointContinueConversation = async (
       method
     );
     const data = JSON.parse(response);
+    LangChainService.pushToSequence(data);
     rep.status(200).send({ ...data });
   } catch (err) {
     rep.status(500).send(err);
   }
+};
+
+export const langChainEndpointGetGraphData = async (
+  req: FastifyRequest,
+  rep: FastifyReply
+) => {
+  rep.status(200).send(LangChainService.graphData);
 };
