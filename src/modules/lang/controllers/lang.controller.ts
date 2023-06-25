@@ -7,13 +7,19 @@ export const langChainEndpoint = async (
   rep: FastifyReply
 ) => {
   const subject = req.body.subject;
+  const context = req.body.context;
   const level = req.body.level;
   const method = req.body.method;
   try {
-    const response = await LangChainService.prompt(subject, level, method);
+    const response = await LangChainService.prompt(
+      subject,
+      context,
+      level,
+      method
+    );
     const data = JSON.parse(response);
     rep.status(200).send({ data });
   } catch (err) {
-    rep.status(500).send(err.message);
+    rep.status(500).send(err);
   }
 };

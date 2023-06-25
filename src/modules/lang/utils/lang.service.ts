@@ -18,10 +18,11 @@ class LangChainService {
 
   public async prompt(
     subject: string,
+    context: string,
     level: string,
     method: string
   ): Promise<string> {
-    const constructedPrompt = constructPrompt(subject, level, method);
+    const constructedPrompt = constructPrompt(subject, context, level, method);
     const response = this._model.call(constructedPrompt);
     return response;
   }

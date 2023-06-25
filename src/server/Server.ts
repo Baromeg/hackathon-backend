@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyPluginOptions, RouteOptions } from "fastify";
-import { SchemaObject } from "ajv";
 import { IncomingMessage, Server as httpServer, ServerResponse } from "http";
 import { plugin, pluginSet, router, routerSet } from "./serverTypes";
 
@@ -45,10 +44,6 @@ export class Server {
   public registerApi() {
     this.registerPlugins();
     this.registerRouters();
-  }
-
-  public addSchema(schema: SchemaObject) {
-    this.serverInstance.addSchema(schema);
   }
 
   public async initServer(port: number, host: string) {

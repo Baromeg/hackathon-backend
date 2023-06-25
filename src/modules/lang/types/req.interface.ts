@@ -8,6 +8,7 @@ import { ReplyGenericInterface } from "fastify/types/reply";
 export interface RequestGenericInterfaceLangModel {
   Body: {
     subject: string;
+    context: string;
     level: string;
     method: string;
   };
